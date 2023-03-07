@@ -1,0 +1,6 @@
+/.idea/
+
+# out/debug
+/out/[Dd][Ee][Bb][Uu][Gg]
+# out/release
+/out/[Rr][Ee][Ll][Ee][Aa][Ss][Ee]
