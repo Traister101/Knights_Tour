@@ -3,4 +3,4 @@ project(Knights_Tour)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(knightsTour main.cpp)
+add_executable(knightsTour knightsTour.cpp)

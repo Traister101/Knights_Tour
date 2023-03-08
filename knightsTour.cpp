@@ -205,13 +205,13 @@ int solveKnightsTour(Board board, int row, int column, int currentMove = 1) {
 	// Final move
 	if (currentMove == BOARD_HEIGHT * BOARD_WIDTH) {
 		using std::cout;
-		cout << "Solution #" << solution++ << "\n";
+		cout << "Solution #" << solution++ << ":\n";
 		cout << board;
 		cout << "Board is semi-magical square: ";
 		// Turns the boolean into a True/False string
-		cout << (board.isSemiMagicSquare() ? "True" : "False");
+		cout << (board.isSemiMagicSquare() ? "True" : "False"); // This is always false for 5x5??
 		cout << "\n" << std::endl; // New line and flush
-		return 1;
+		return 1; // We've found a solution
 	}
 
 	currentMove++;
