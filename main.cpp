@@ -22,7 +22,7 @@ const std::array<Move, 8> validMoves = {
 };
 
 class Board {
-
+	// Row type
 	using Row = std::array<int, BOARD_WIDTH>;
 	// The actual board
 	std::array<Row, BOARD_HEIGHT> board = {};
@@ -74,6 +74,23 @@ public:
 
 		return true;
 	}
+
+	/**
+	 * Exposes the rows for iteration
+	 * @return Iterator over the rows
+	 */
+	std::array<Row, BOARD_HEIGHT>::iterator begin() {
+		return board.begin();
+	}
+
+	/**
+	 * Exposes the end of the rows
+	 * @return End iterator for the rows
+	 */
+	std::array<Row, BOARD_HEIGHT>::iterator end() {
+		return board.end();
+	}
+
 };
 
 /**
@@ -84,24 +101,20 @@ public:
  * @return
  */
 std::ostream &operator<<(std::ostream &stream, Board &board) {
-
-	for (int row = 0; row < board.height(); row++) {
-
-		for (int column = 0; column < board.width(); column++) {
-
-			const int position = board.at(column, row);
-
+	// Loop over each row
+	for (const auto &row: board) {
+		// How many squares we've printed
+		int squares = 1;
+		for (const int &position: row) {
 			// Need to prepend a 0
 			if (position <= 9) {
 				stream << "0" << position;
 			} else stream << position;
 
-			// This puts spaces between each entry and none at the end of a row,,,
-			stream << (column < board.width() - 1 ? " " : "");
+			// This puts spaces between each entry and new line at the end of a row
+			stream << (squares++ < row.size() ? " " : "\n");
 		}
-		stream << "\n";
 	}
-
 	return stream;
 }
 
