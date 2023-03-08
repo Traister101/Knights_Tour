@@ -1,5 +1,6 @@
 #include <iostream>
 #include <array>
+#include <vector>
 
 const int BOARD_HEIGHT = 5;
 const int BOARD_WIDTH = 5;
@@ -28,6 +29,9 @@ class Board {
 	std::array<Row, BOARD_HEIGHT> board = {};
 
 public:
+
+	using RowIterator = std::array<Row, BOARD_HEIGHT>::iterator;
+	using ConstRowIterator = std::array<Row, BOARD_HEIGHT>::const_iterator;
 
 	/**
 	 * Wrapper over the array function
@@ -76,10 +80,49 @@ public:
 	}
 
 	/**
+	 * Check if this board is a semi-magic square IE All rows and columns total to the same value
+	 * @return if semi-magic square
+	 */
+	bool isSemiMagicSquare() const {
+		std::vector<int> rowTotals;
+		std::vector<int> columnTotals;
+		rowTotals.reserve(width());
+		columnTotals.reserve(height());
+
+		// For each row
+		for (int row = 0; row < width(); ++row) {
+			int rowTotal = 0;
+			int columnTotal = 0;
+			// For each square in the row IE column
+			for (int column = 0; column < height(); ++column) {
+				rowTotal += at(column, row);
+				// Swapping the args makes it go down columns
+				columnTotal += at(row, column);
+			}
+			// They don't match we can quit early
+			if (rowTotal != columnTotal) return false;
+
+			// Put our total for this row
+			rowTotals.push_back(rowTotal);
+			columnTotals.push_back(columnTotal);
+		}
+
+		// Each row total
+		for (const int &rowTotal: rowTotals) {
+			// Each column total
+			for (const int &columnTotal: columnTotals) {
+				// Check each row total against each column total
+				if (rowTotal != columnTotal) return false;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * Exposes the rows for iteration
 	 * @return Iterator over the rows
 	 */
-	std::array<Row, BOARD_HEIGHT>::iterator begin() {
+	RowIterator begin() {
 		return board.begin();
 	}
 
@@ -87,7 +130,23 @@ public:
 	 * Exposes the end of the rows
 	 * @return End iterator for the rows
 	 */
-	std::array<Row, BOARD_HEIGHT>::iterator end() {
+	RowIterator end() {
+		return board.end();
+	}
+
+	/**
+	 * Exposes the rows for iteration
+	 * @return Const iterator over the rows
+	 */
+	ConstRowIterator begin() const {
+		return board.begin();
+	}
+
+	/**
+	 * Exposes the end of the rows
+	 * @return End iterator for the rows
+	 */
+	ConstRowIterator end() const {
 		return board.end();
 	}
 
@@ -145,8 +204,13 @@ int solveKnightsTour(Board board, int row, int column, int currentMove = 1) {
 
 	// Final move
 	if (currentMove == BOARD_HEIGHT * BOARD_WIDTH) {
-		std::cout << "Solution #" << solution++ << "\n";
-		std::cout << board << std::endl; // New line and flush
+		using std::cout;
+		cout << "Solution #" << solution++ << "\n";
+		cout << board;
+		cout << "Board is semi-magical square: ";
+		// Turns the boolean into a True/False string
+		cout << (board.isSemiMagicSquare() ? "True" : "False");
+		cout << "\n" << std::endl; // New line and flush
 		return 1;
 	}
 
