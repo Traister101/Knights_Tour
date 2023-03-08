@@ -46,7 +46,7 @@ public:
 	 * @param row
 	 * @return The board row
 	 */
-	std::array<int, BOARD_WIDTH> &operator[](int row) {
+	Row &operator[](int row) {
 		return board[row];
 	}
 
