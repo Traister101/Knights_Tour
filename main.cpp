@@ -74,10 +74,6 @@ public:
 
 		return true;
 	}
-
-	Row::iterator begin() {
-		return operator[](0).begin();
-	}
 };
 
 /**
